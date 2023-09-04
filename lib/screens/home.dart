@@ -1,4 +1,5 @@
 import 'package:fitness/models/category_model.dart';
+import 'package:fitness/models/diet_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -6,19 +7,24 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   List<CategoryModel> categories = [];
+  List<DietModel> diets = [];
 
   void _getCategories() {
     categories = CategoryModel.getCategories();
   }
 
-  @override
-  void initState() {
-    _getCategories();
+  void _getDiets() {
+    diets = DietModel.getDiets();
+  }
+
+  void _getInitialInfo() {
+    categories = CategoryModel.getCategories();
+    diets = DietModel.getDiets();
   }
 
   @override
   Widget build(BuildContext context) {
-    initState();
+    _getInitialInfo();
     return Scaffold(
       appBar: appBar(),
       backgroundColor: Colors.white,
@@ -35,67 +41,67 @@ class HomeScreen extends StatelessWidget {
 
   Column _categoriesSection() {
     return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 18),
-              child: Text(
-                "Category",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 18),
+          child: Text(
+            "Category",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
             ),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 120,
-              child: ListView.separated(
-                itemCount: categories.length,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                ),
-                separatorBuilder: (context, index) {
-                  return const SizedBox(width: 25);
-                },
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 100,
-                    decoration: BoxDecoration(
-                        color: categories[index].boxColor.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          padding: const EdgeInsets.all(2),
-                          child: SvgPicture.asset(categories[index].iconPath),
-                        ),
-                        Text(
-                          categories[index].name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
+          ),
+        ),
+        const SizedBox(height: 15),
+        SizedBox(
+          height: 120,
+          child: ListView.separated(
+            itemCount: categories.length,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            separatorBuilder: (context, index) {
+              return const SizedBox(width: 25);
+            },
+            itemBuilder: (context, index) {
+              return Container(
+                width: 100,
+                decoration: BoxDecoration(
+                    color: categories[index].boxColor.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(16)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(2),
+                      child: SvgPicture.asset(categories[index].iconPath),
                     ),
-                  );
-                },
-              ),
-            ),
-          ],
-        );
+                    Text(
+                      categories[index].name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 
   Container _searchField() {
