@@ -63,6 +63,8 @@ flutter:
     - assets/pancakes.svg
     - assets/pie.svg
     - assets/plate.svg
+    - assets/canai-bread.svg
+    - assets/honey-pancakes.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
