@@ -1,71 +1,153 @@
+import 'package:fitness/models/category_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  List<CategoryModel> categories = [];
+
+  void _getCategories() {
+    categories = CategoryModel.getCategories();
+  }
+
+  @override
+  void initState() {
+    _getCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
+    initState();
     return Scaffold(
       appBar: appBar(),
       backgroundColor: Colors.white,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _searchField(),
+          const SizedBox(height: 40),
+          _categoriesSection()
         ],
       ),
     );
   }
 
-  Container _searchField() {
-    return Container(
-          margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff1D1617).withOpacity(0.11),
-                blurRadius: 40,
-                spreadRadius: 0,
-              )
-            ],
-          ),
-          child: TextField(
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.all(12),
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: Colors.grey,
+  Column _categoriesSection() {
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 18),
+              child: Text(
+                "Category",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
                 ),
-                suffixIcon: const SizedBox(
-                  width: 100,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+              ),
+            ),
+            const SizedBox(height: 15),
+            SizedBox(
+              height: 120,
+              child: ListView.separated(
+                itemCount: categories.length,
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                ),
+                separatorBuilder: (context, index) {
+                  return const SizedBox(width: 25);
+                },
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: 100,
+                    decoration: BoxDecoration(
+                        color: categories[index].boxColor.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        VerticalDivider(
-                          color: Colors.black,
-                          indent: 10,
-                          endIndent: 10,
-                          thickness: 0.1,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 12),
-                          child: Icon(
-                            Icons.tune_rounded,
-                            color: Colors.grey,
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
                           ),
+                          padding: const EdgeInsets.all(2),
+                          child: SvgPicture.asset(categories[index].iconPath),
                         ),
+                        Text(
+                          categories[index].name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                )),
-          ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
+  }
+
+  Container _searchField() {
+    return Container(
+      margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xff1D1617).withOpacity(0.11),
+            blurRadius: 40,
+            spreadRadius: 0,
+          )
+        ],
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.all(12),
+            prefixIcon: const Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
+            suffixIcon: const SizedBox(
+              width: 100,
+              child: IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    VerticalDivider(
+                      color: Colors.black,
+                      indent: 10,
+                      endIndent: 10,
+                      thickness: 0.1,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: 12),
+                      child: Icon(
+                        Icons.tune_rounded,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide.none,
+            )),
+      ),
+    );
   }
 
   AppBar appBar() {
