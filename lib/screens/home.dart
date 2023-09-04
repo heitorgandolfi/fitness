@@ -9,14 +9,6 @@ class HomeScreen extends StatelessWidget {
   List<CategoryModel> categories = [];
   List<DietModel> diets = [];
 
-  void _getCategories() {
-    categories = CategoryModel.getCategories();
-  }
-
-  void _getDiets() {
-    diets = DietModel.getDiets();
-  }
-
   void _getInitialInfo() {
     categories = CategoryModel.getCategories();
     diets = DietModel.getDiets();
@@ -35,7 +27,8 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 40),
           _categoriesSection(),
           const SizedBox(height: 40),
-          _dietSection()
+          _dietSection(),
+          const SizedBox(height: 40),
         ],
       ),
     );
@@ -43,89 +36,88 @@ class HomeScreen extends StatelessWidget {
 
   Column _dietSection() {
     return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 18),
-              child: Text(
-                "Recomendation\nfor Diet",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 18),
+          child: Text(
+            "Recomendation\nfor Diet",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
             ),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: 220,
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 210,
-                    decoration: BoxDecoration(
-                      color: diets[index].boxColor.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          ),
+        ),
+        const SizedBox(height: 15),
+        SizedBox(
+          height: 220,
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              return Container(
+                width: 210,
+                decoration: BoxDecoration(
+                  color: diets[index].boxColor.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SvgPicture.asset(diets[index].iconPath),
+                    Column(
                       children: [
-                        SvgPicture.asset(diets[index].iconPath),
-                        Column(
-                          children: [
-                            Text(
-                              diets[index].name,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              "${diets[index].level} | ${diets[index].duration} | ${diets[index].calorie}",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black.withOpacity(0.5),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          height: 45,
-                          width: 130,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  diets[index].boxColor,
-                                  diets[index].boxColor.withOpacity(0.7)
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(50)),
-                          child: const Center(
-                            child: Text(
-                              "View",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
+                        Text(
+                          diets[index].name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
                           ),
-                        )
+                        ),
+                        Text(
+                          "${diets[index].level} | ${diets[index].duration} | ${diets[index].calorie}",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
                       ],
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(width: 20),
-                itemCount: diets.length,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(left: 25, right: 25),
-              ),
-            )
-          ],
-        );
+                    Container(
+                      height: 45,
+                      width: 130,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              diets[index].boxColor,
+                              diets[index].boxColor.withOpacity(0.7)
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: const Center(
+                        child: Text(
+                          "View",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => const SizedBox(width: 20),
+            itemCount: diets.length,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(left: 25, right: 25),
+          ),
+        )
+      ],
+    );
   }
 
   Column _categoriesSection() {
